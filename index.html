@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MouseMove Event</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #000;
+      }
+      .square {
+        height: 500px;
+        background: #d6f36f;
+        width: 800px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #mousePos {
+        font-size: 1.5rem;
+        font-weight: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="square">
+      <p id="mousePos">Move the cursor inside the container</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script>
+      const square = document.querySelector(".square");
+      square.addEventListener("mousemove", (dets) => {
+        const sqrElem = square.getBoundingClientRect();
+        const cursor = dets.clientX - sqrElem.left;
+        if (cursor < sqrElem.width / 2) {
+          const blueColor = gsap.utils.mapRange(
+            0,
+            sqrElem.width / 2,
+            200,
+            0,
+            cursor
+          );
+          gsap.to(square, {
+            backgroundColor: `rgb(${blueColor}, 36, 94)`,
+            ease: "power4",
+          });
+        } else {
+          const redColor = gsap.utils.mapRange(
+            sqrElem.width / 2,
+            sqrElem.width,
+            0,
+            255,
+            cursor
+          );
+          gsap.to(square, {
+            backgroundColor: `rgb(103, 145, ${redColor})`,
+            ease: "power4",
+          });
+        }
+      });
+
+      square.addEventListener("mouseleave", () => {
+        gsap.to(square, {
+          backgroundColor: "#D6F36F",
+          ease: "power4",
+        });
+      });
+    </script>
+  </body>
+</html>
